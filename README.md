@@ -1,34 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Ajaib Assestment Test
 
-## Getting Started
+- Creating filtered Datatable with pagination and Filtermenu
 
-First, run the development server:
+## Installation
+
+for install the dependencies
 
 ```bash
-npm run dev
-# or
-yarn dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```
+npm run dev
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+## Test Requirement
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- Creating datatable component
 
-## Learn More
+using React-datatable-component '[React-DataTable-Component](https://react-data-table-component.netlify.app/)'
 
-To learn more about Next.js, take a look at the following resources:
+- API Reference 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+using random user API '[Random User API](https://randomuser.me/)'
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+i using axios for fetching API, you need to install the **axios** first 
+'[Axios](https://github.com/axios/axios)'
 
-## Deploy on Vercel
+you can find it on the redux action file **userAction.jsx**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+and you can see the redux files at **store** folder
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+the datatable is in **index.js** 
+
+and the index.js has a wrapper component it calls **withUser.jsx**
+
+the filter menu and pagination is always change API queryParams when the **applyFilter** button is clicked.
+
+ 
+it makes the pagination need some params from the API 
