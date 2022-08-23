@@ -59,7 +59,7 @@ function WithUser(WrappedComponent) {
     }
     useEffect(() => {
       applyFilter();
-    }, []);
+    });
 
     return (
       <>
