@@ -1,8 +1,8 @@
 import DataTable from "react-data-table-component";
 import styles from "../styles/Home.module.css";
-import { useEffect } from "react";
-import WithUser from "../components/_hoc/user/withUser";
-import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchUser } from "../store/actions/userAction";
 
 const columns = [
   {
@@ -32,42 +32,98 @@ const columns = [
   },
 ];
 
-function Home(props) {
+function Home() {
   const usersList = useSelector((state) => state.usersList);
   const { loading, error, users } = usersList;
+  const dispatchRedux = useDispatch();
+
+  const [filter, setFilter] = useState({
+    page: 1,
+    pageSize: 10,
+    gender: null,
+    keyword: null,
+    sortBy: null,
+    sortOrder: "ascend",
+    results: 30,
+    seed: "abc",
+  });
+
+  function applyFilter() {
+    let tempQueryParams = [];
+    if (filter.page) {
+      tempQueryParams = [...tempQueryParams, `page=${filter.page}`];
+    }
+    if (filter.pageSize) {
+      tempQueryParams = [...tempQueryParams, `pageSize=${filter.pageSize}`];
+    }
+    if (filter.gender) {
+      tempQueryParams = [...tempQueryParams, `gender=${filter.gender}`];
+    }
+    if (filter.keyword) {
+      tempQueryParams = [...tempQueryParams, `keyword=${filter.keyword}`];
+    }
+    if (filter.sortBy) {
+      tempQueryParams = [...tempQueryParams, `sortBy=${filter.sortBy}`];
+    }
+    if (filter.sortOrder) {
+      tempQueryParams = [...tempQueryParams, `sortOrder=${filter.sortOrder}`];
+    }
+    if (filter.results) {
+      tempQueryParams = [...tempQueryParams, `results=${filter.results}`];
+    }
+    if (filter.seed) {
+      tempQueryParams = [...tempQueryParams, `seed=${filter.seed}`];
+    }
+
+    let finalQueryParams = "";
+    if (tempQueryParams.length > 0) {
+      finalQueryParams = "?" + tempQueryParams.join("&");
+    }
+
+    dispatchRedux(fetchUser(finalQueryParams));
+  }
+  useEffect(() => {
+    applyFilter();
+  }, []);
+
+  function handleFilter(value) {
+    const tempFilterList = { ...value };
+    setFilter(tempFilterList);
+  }
 
   function handleKeyword(event) {
-    let tempValue = props.filter;
+    let tempValue = filter;
     tempValue.keyword = event.target.value;
-    props.setFilter(tempValue);
+    handleFilter(tempValue);
+    applyFilter();
   }
 
   function handleGender(event) {
-    let tempValue = props.filter;
+    let tempValue = filter;
     tempValue.gender = event.target.value;
-    props.setFilter(tempValue);
+    handleFilter(tempValue);
   }
 
   function handleSortBy(event) {
-    let tempValue = props.filter;
+    let tempValue = filter;
     tempValue.sortBy = event.target.value;
-    props.setFilter(tempValue);
+    handleFilter(tempValue);
   }
   function handleSortOrder(event) {
-    let tempValue = props.filter;
+    let tempValue = filter;
     tempValue.sortOrder = event.target.value;
-    props.setFilter(tempValue);
+    handleFilter(tempValue);
   }
 
   const handlePageChange = (page, perPage) => {
-    let tempValue = props.filter;
+    let tempValue = filter;
     tempValue.page = page;
-    props.setFilter(tempValue);
-    props.applyFilter();
+    handleFilter(tempValue);
+    applyFilter();
   };
 
   const handleResetFilter = () => {
-    let tempValue = props.filter;
+    let tempValue = filter;
     tempValue.page = 1;
     tempValue.pageSize = 10;
     tempValue.gender = null;
@@ -76,14 +132,10 @@ function Home(props) {
     tempValue.sortOrder = "ascend";
     tempValue.results = 30;
     tempValue.seed = "abc";
-    props.setFilter(tempValue);
+    handleFilter(tempValue);
     document.getElementById("formFilter").reset();
-    props.applyFilter();
+    applyFilter();
   };
-
-  useEffect(() => {
-    // props.applyFilter();
-  }, []);
 
   return (
     <div className={styles.container}>
@@ -132,7 +184,7 @@ function Home(props) {
             </select>
             <button
               type="button"
-              onClick={() => props.applyFilter()}
+              onClick={() => applyFilter()}
               style={{ padding: "10px", margin: "10px" }}
             >
               Apply Filter
@@ -162,4 +214,4 @@ function Home(props) {
   );
 }
 
-export default WithUser(Home);
+export default Home;
